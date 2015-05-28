@@ -1,0 +1,43 @@
+def printEigenComponent(EigeinValues, EigenVectors):
+    for idx, val in enumerate(EigeinValues):
+        print 'Lambda{0} = {1:.3f}'.format(idx, val)
+        print 'b{0} : {1}.T\n'.format(idx, EigenVectors[:,idx])
+
+def computeEigenComponent(matrice_corre_norm):
+    EigeinValues, EigenVectors = np.linalg.eig(matrice_corre_norm)
+    printEigenComponent(EigeinValues, EigenVectors)
+    
+    return EigeinValues, EigenVectors
+
+def annalyseComponents():
+    matrice_corr = np.cov(X)
+    print 'matrice de correlation :\n', matrice_corr
+    matrice_corre_norm=np.corrcoef( X,rowvar=0)
+    matrice_corre_norm.shape
+    print 'matrice de correlation normalise:\n', matrice_corre_norm
+
+    
+    EigeinValues, EigenVectors = computeEigenComponent(matrice_corre_norm)
+    axe1 = EigenVectors[:,0]
+    axe2 = EigenVectors[:,1]
+    
+    plt.figure()
+    projections_x = np.dot(X, axe1)
+    projections_y = np.dot(X, axe2)
+    plt.plot(projections_x, projections_y, 'ro', linewidth=0.5)
+    #for idx, echantillon in enumerate(echantillons):
+        #plt.gca().text(projections_x[idx], projections_y[idx], echantillon, color='black', ha='left', va='bottom', fontweight='bold')
+    #plt.grid(True)
+    plt.xlabel('Axe 1')
+    plt.ylabel('Axe 2')
+    plt.axis([-3.5, 3.5, -3.5, 3.5])
+    plt.show()
+
+def main(argv):
+    plt.close('all')
+    np.set_printoptions(precision=3, suppress=True)
+
+    annalyseComponents()
+
+if __name__ == '__main__':
+    main(sys.argv)
